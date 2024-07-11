@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'forums#index'
   resources :users
   post '/users/:id/logon', to: 'users#logon', as: 'user_logon'
   delete '/users/logoff', to: 'users#logoff', as: 'user_logoff'
@@ -9,7 +10,7 @@ Rails.application.routes.draw do
   # post '/users', to: 'users#create'
   # patch '/users/:id', to: 'users#update'
   # delete '/users/:id', to: 'users#delete'
-  # resources :forums
+  resources :forums
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
