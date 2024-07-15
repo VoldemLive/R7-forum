@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   before_action :check_logon, except: %w[show]
   before_action :set_forum, only: %w[create new]
   before_action :set_post, only: %w[show edit update destroy]
-  before_action :check_access, only: %w[edit update delete]
+  before_action :check_access, only: %w[edit update delete] # access control!! a user can only
 
   def create
     @post = @forum.posts.new(post_params)  # we create a new post for the current forum
@@ -55,7 +55,10 @@ class PostsController < ApplicationController
   end
 
   def post_params   # security check, also known as "strong parameters"
-    params[:post][:user_id] = session[:current_user]["id"] 
+    # very strange but current line of code didn't works with a ["id"], 
+    # so I delete it and all start working
+    #params[:post][:user_id] = session[:current_user]["id"] 
+    params[:post][:user_id] = session[:current_user]
        # here we have to add a parameter so that the post is associated with the current user
     params.require(:post).permit(:title,:content,:user_id)
   end
