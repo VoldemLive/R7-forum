@@ -4,6 +4,8 @@ Questions for Lesson 7
 before some or all of the controller actions execute?  Where can you put that
 change so that it affects all controllers?
 
+We need to use before_action method with a list of callback methods. 
+Current method we can use with a additional parameters as a "exept" and "only"
 
 
 2. Consider the following statement:
@@ -14,13 +16,22 @@ This creates several files, including two you need to know about.  What are they
 After you do this statement but before starting the rails server, you have to do another
 command.  What is that command?
 
-
+After we created a new model we need add this editions into database, so we need to call 
+bin/rails db:migrate 
+Current command will added tables and fields required by models
 
 3. What table is created as a result of the migration described above? What are the column
 names in that table? What is the primary key? What are the foreign keys?  What does a 
 foreign key do?
 
-
+Will created new table: subscription
+new fields: 
+  id - it's a primary key and it's a automated field
+  forum - it's references to forums table with a id filed, also it's a foreign key
+  user - it's references to users table with a id filed, also it's a foreign key
+  priority - it's integer value type.
+  created_at - automated fields with a timestamps of creation
+  edited_at - automated fields with a timestamps of last editions
 
 4. You have the following lines in the Subscription model:
 
@@ -32,6 +43,10 @@ that if you have a @subscription (an instance of Subscription), you have a coupl
 used to refer to associated database methods.  What are those methods?  (Actually there are a few,
 but there are two in particular you should know.)
 
+This two call of methods belongs_to :user and belongs_to :forum will create few different methods with a 
+relation to models User and Forum. We can call user object by @subscription.user or @subscription.forum 
+to call forum object
+
 
 
 5. You have the following lines in the User model.
@@ -40,8 +55,11 @@ has_many :subscriptions
 has_many :posts
 has_many :forums, through: :subscriptions
 
-What are threee important methods that are available to instances of the user model because
+What are three important methods that are available to instances of the user model because
 of these lines?
+
+this chain of methods will create methonds to call user related data:
+@user.subcriptions, @user.posts, @user.forums
 
 
 
@@ -67,6 +85,9 @@ Try that last line.  You will see that it creates a subscription object, but tha
 object is not entirely empty.  Which attribute is set? Where does it get that
 value?
 
+In created subcription object just user_id is not empty. Current value was setted when we call
+user.subscriptions and after new_subscription = subscriptions.new or with this explicit indication 
+as here new_subscription = user.subscriptions.new
 
 
 7. Suppose that user is an instance of User, and forum is an instance of Forum.  What
@@ -74,7 +95,7 @@ Active Record Statement could you use to retrieve all the user's posts for that
 forum?  Hint: You need to have a where in your statement. Try this out in the console.
 You will see the SQL that is executed logged to the screen.  What is that SQL?
 
-
+SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?  [["user_id", 1]]
 
 8. You have the following method in your posts controller:
 
@@ -87,19 +108,20 @@ You will see the SQL that is executed logged to the screen.  What is that SQL?
 There is a security exposure, a risk that a hacker could do damage.  What is that
 risk? What two things are done in your code to prevent the risk?
 
-
+Risk to give access to call some important application functions without authentification.
+We prevent a hacker by covering important methods by before_action :check_access, only: %w[edit update delete] 
+(how I understand it's a like middleware in Nodejs) and we check current user from cookies
 
 9. The routes for subscriptions are nested under the forum routes.  How does this
 change the routes?  What is the additional hash key and value that is passed in the
 params hash to the subscriptions controller as a result of this nesting? Which routes
 are unaffected by the nesting?
 
-
+Hash param is a forum value and it's a needed in methonds show, edit, upate, destroy
 
 
 10. Every action method must do exactly one of two things -- that is, each
 method may do all sorts of logic, but at the end, it has to do one of two
 things, depending on the outcome of the logic.  What are those two things?
 
-
-
+If I all understand correct every method need to return value to render or redirect_to

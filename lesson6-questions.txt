@@ -3,36 +3,51 @@ Questions for Lesson 6
 1. When you enable CRUD operations on a table in the database, you need to add four things
 to your Rails application.  When you generate a scaffold, all four are created.What are they?
 
-
+  These are standard methods for manipulating any data in a database. Scaffold helps automate 
+  the creation of these methods, also called "boiler plate methods".
 
 
 2. When you specify a route in config/routes.rb, you need to include certain information.  What
 must be included? In addition, you may specify an additional parameter to create a variable
 that describes the route.  How do you do that? What variable is created?
 
-
+  You can use your class name as a route or manually write multiple routes for some class methods. 
+  As in the example, the same routes were created in two different ways.
 
 3. What does the Rails db:migrate command do?
 
-
+  This command creates additional tables with fields in the database according to the model.
 
 4. What file do you look at to see the current database schema?
 
+  You can find db schema in file /db/schema.rb. There you can see data structure and fileds.
 
 5. What command shows the routes?
 
+  rails routes - shows you current routes in project.
 
 6. How can you start the Rails console? How can you do CRUD operations from the console?
+
+  I run Rails console from my terminal from VS Code, 
+  I created new terminal window and there started Rails console.
+  Sure, you can call CRUD methods from Rails console.
 
 
 7. What statements are in erb files that make them different from html files?  What are the
 two kinds of special statements, and how are they marked in the erb file? Where are they executed?
 
+  erb is a template type file in which we can mix Ruby logic code with HTML syntax.
+  When a user requests a page, the request is sent to the server, 
+  on the server side Rails processes the code from the erb file, 
+  converts it to plain HTML and sends it to the user. 
+  As say shorter is a server side render (SSR).
+
 
 8. Consider this statement: @forum = Forum.new().  Why is Forum capitalized?  Why is @forum not
 capitalized? Why is the @ used?
 
-
+  @forum - it's a link on new entity of Forum class. 
+  Forum it's a class, so it's must be capitalized.
 
 9. Consider these statements:
 
@@ -41,6 +56,10 @@ capitalized? Why is the @ used?
 @forum.save(...)
 
 What is the difference between Forum.new() and Forum.create()?  Why can't you do Forum.save(...)?
+
+  Forum.new - it's a link on entity of new Forum class. 
+  Forum.create - it's a creation of new record in memory.
+  @forum.save - this method add record into DB 
 
 
 10. In the forums controller, you have a method called show:
@@ -55,6 +74,11 @@ do?  How does it know which forum to show?  Whenever you have an action method, 
 is a hash called params that is passed to that method.  And, in this case, the params
 hash has a value, params[:id].  What is the value for this element of the hash? How
 did it get there?
+
+  value of id we take from query string of the browser. 
+  It's looks like https://yousite.blabla/class_or_some_category/some_method/some_param, 
+  in routes we indicate :some_param is a some variable where we will use in our app
+  It's a like slice and we slice it by forum id, change id, changed content. 
 
 
 
