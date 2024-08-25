@@ -22,7 +22,9 @@ class ForumsController < ApplicationController
   # POST /forums or /forums.json
   def create
     @forum = Forum.new(forum_params)
-
+    if !@current_user
+      redirect_to forums_path, notice: "You can't add, modify, or delete forum before logon."
+    end
     respond_to do |format|
       if @forum.save
         format.html { redirect_to forum_url(@forum), notice: "Forum was successfully created." }
@@ -36,6 +38,9 @@ class ForumsController < ApplicationController
 
   # PATCH/PUT /forums/1 or /forums/1.json
   def update
+    if !@current_user
+      redirect_to forums_path, notice: "You can't add, modify, or delete forum before logon."
+    end
     respond_to do |format|
       if @forum.update(forum_params)
         format.html { redirect_to forum_url(@forum), notice: "Forum was successfully updated." }
@@ -49,6 +54,9 @@ class ForumsController < ApplicationController
 
   # DELETE /forums/1 or /forums/1.json
   def destroy
+    if !@current_user
+      redirect_to forums_path, notice: "You can't add, modify, or delete forum before logon."
+    end
     @forum.destroy
 
     respond_to do |format|

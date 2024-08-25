@@ -21,15 +21,21 @@ class PostsController < ApplicationController
   end
   
   def update
-    @post = Post.new(post_params)
+    some_post = Post.new(post_params)
+    @post.title = some_post.title
+    @post.content = some_post.content
     @post.save
     redirect_to @post, notice: "Your post was updated."
   end
   
   def destroy
     @forum = @post.forum # we need to save this, so we can redirect to the forum after the destroy
-    @post.destroy
-    redirect_to @forum, notice: "Your post was deleted."
+    if @post.user == @current_user
+      @post.destroy
+      redirect_to @forum, notice: "Your post was deleted."
+    else
+      redirect_to @forum, notice: "You can't delete post by other author."
+    end
   end
 
   private

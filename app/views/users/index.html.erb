@@ -15,7 +15,7 @@
 <div>
   <% if @current_user %>
     <%= "#{@current_user.name} is logged on." %>
-    <%= button_to "Log Off", user_logoff_path, method: :delete %>
+    <%= button_to "Log Off", user_logoff_path, method: :post %>
   <% else %>
     No one is logged in.
   <% end %>

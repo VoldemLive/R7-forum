@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   # resources :subscriptions
   resources :users
   post '/users/:id/logon', to: 'users#logon', as: 'user_logon'
-  delete '/users/logoff', to: 'users#logoff', as: 'user_logoff'
+  post '/users/logoff', to: 'users#logoff', as: 'user_logoff'
   
   root 'forums#index'
   resources :forums do
