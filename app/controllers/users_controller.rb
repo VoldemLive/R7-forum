@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy logon ]
+  before_action :set_user, only: %i[ show edit update destroy logon]
 
   def logon
     session[:current_user] = @user.id
@@ -7,8 +7,9 @@ class UsersController < ApplicationController
   end
   
   def logoff
-    session.delete(:current_user)
-    redirect_to users_path, notice: "You have logged off."
+    Rails.logger.debug "Attempting to log off..."
+    session[:current_user] = nil
+    redirect_to root_path, notice: "You have logged off."
   end
 
   # GET /users or /users.json
@@ -64,6 +65,11 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
+    # if params[:id] == "logoff"
+    #   session[:current_user] = nil
+    #   @users = nil
+    #   redirect_to users_url
+    # end
     @user.destroy
 
     respond_to do |format|
@@ -75,7 +81,11 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      begin
+        @user = User.find(params[:id])
+      rescue
+        redirect_to users_url
+      end
     end
 
     # Only allow a list of trusted parameters through.
